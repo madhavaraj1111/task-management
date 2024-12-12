@@ -11,7 +11,7 @@ const TaskTable = () => {
   const [viewID, setViewID] = useState();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchTasks = () => {
     axios
       .get("http://localhost:4545/tasks/")
       .then((response) => {
@@ -20,12 +20,27 @@ const TaskTable = () => {
       .catch((error) => {
         console.log("Error while getting data from the server", error);
       });
+  };
+
+  useEffect(() => {
+    fetchTasks();
   }, []);
 
-  // view functionality
   const handleView = (id) => {
     setViewID(id);
     setIsModalOpen(!isModalOpen);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:4545/tasks/${id}`);
+    } catch (error) {
+      console.log("Error when deleting the data", error);
+    }
+  };
+
+  const handleEdit = (id) => {
+    navigate("/edit-task", { state: id });
   };
 
   const viewData = taskData.find((task) => {
@@ -37,10 +52,10 @@ const TaskTable = () => {
   };
 
   return (
-    <div className="mx-10 mt-40 flex justify-center items-center">
+    <div className="mx-10 mt-10 flex justify-center items-center">
       {isModalOpen ? (
         <div
-          className={`max-w-md bg-white rounded-lg shadow-2xl px-20 py-8 absolute mx-auto z-10  text-xs border transition-all duration-300 `}
+          className={`max-w-md bg-white  rounded-lg shadow-inner  shadow-gray-500 px-20 py-8 absolute mx-auto z-10  text-xs border-2 border-gray-200 transition-all duration-300 `}
         >
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Task Details
@@ -54,13 +69,17 @@ const TaskTable = () => {
               <h3 className="text-lg font-medium text-gray-700">
                 Task Created At:
               </h3>
-              <p className="text-gray-600 text-sm">{viewData.createdAt}</p>
+              <p className="text-gray-600 text-sm">
+                {dayjs(viewData.createdAt).format("DD-MM-YYYY,HH:MM")}
+              </p>
             </div>
             <div>
               <h3 className="text-lg font-medium text-gray-700">
                 Expected Finishing Time:
               </h3>
-              <p className="text-gray-600 text-sm">{viewData.finishingTime}</p>
+              <p className="text-gray-600 text-sm">
+                {dayjs(viewData.finishingTime).format("DD-MM-YYYY,HH:MM")}
+              </p>
             </div>
             <div className="space-y-3">
               <h3 className="text-lg font-medium text-gray-700 ">
@@ -92,7 +111,7 @@ const TaskTable = () => {
       ) : (
         ""
       )}
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto p-5 bg-gray-500 shadow-md sm:rounded-lg ">
         <button
           className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-2 border-b-4 border-blue-700 flex items-center hover:border-blue-500 rounded mb-2"
           onClick={() => {
@@ -140,8 +159,8 @@ const TaskTable = () => {
             />
           </div>
         </div>
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
             <tr>
               <th scope="col" className="p-4">
                 <div className="flex items-center">
@@ -228,10 +247,20 @@ const TaskTable = () => {
                     >
                       View
                     </button>
-                    <button className="hover:bg-green-500 text-green-500 font-semibold bg-slate-800  px-2 py-1 transition-all hover:border border-green-500 hover:text-white rounded border hover:border-transparent">
+                    <button
+                      className="hover:bg-green-500 text-green-500 font-semibold bg-slate-800  px-2 py-1 transition-all hover:border border-green-500 hover:text-white rounded border hover:border-transparent"
+                      onClick={() => {
+                        handleEdit(data._id);
+                      }}
+                    >
                       Edit
                     </button>
-                    <button className="hover:bg-red-500 hover:border border-red-400 border hover:border-transparent font-semibold bg-slate-800 px-2 py-1 transition-all text-red-400 hover:text-white rounded">
+                    <button
+                      className="hover:bg-red-500 hover:border border-red-400 border hover:border-transparent font-semibold bg-slate-800 px-2 py-1 transition-all text-red-400 hover:text-white rounded"
+                      onClick={() => {
+                        handleDelete(data._id);
+                      }}
+                    >
                       Delete
                     </button>
                   </td>

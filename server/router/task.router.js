@@ -2,6 +2,7 @@ import express from "express";
 import {
   TaskCreate,
   TaskDelete,
+  TaskDetail,
   TaskRead,
   TaskUpdate,
 } from "../controller/task.controller.js";
@@ -9,6 +10,8 @@ import {
 const router = express.Router();
 
 router.get("/", TaskRead);
+
+router.get("/:id", TaskDetail);
 
 router.post("/", TaskCreate);
 

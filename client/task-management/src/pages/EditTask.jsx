@@ -1,22 +1,31 @@
-import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
-const AddTask = () => {
-  const navigate = useNavigate();
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import dayjs from "dayjs";
+
+const EditTask = () => {
   const [newData, setNewData] = useState({
     taskName: "",
     createdAt: "",
     finishingTime: "",
     checked: "",
   });
+  const location = useLocation();
+  const id = location?.state;
+  const navigate = useNavigate();
 
-  const handleAdd = async () => {
+  useEffect(() => {
+    axios.get(`http://localhost:4545/tasks/${id}`).then((response) => {
+      setNewData(response.data);
+    });
+  }, []);
+
+  const handleEdit = (data) => {
     try {
-      await axios.post("http://localhost:4545/tasks/", newData);
-      console.log("Task Added successfully");
+      axios.put(`http://localhost:4545/tasks/${id}`, data);
       navigate("/");
     } catch (error) {
-      console.log("Problem when adding the task", error);
+      console.log("Error from frontend updation", error);
     }
   };
 
@@ -24,7 +33,7 @@ const AddTask = () => {
     <div>
       <div className="max-w-md mx-auto mt-20 p-6 bg-gray-700  shadow-lg rounded-md">
         <h2 className="text-2xl font-semibold text-center mb-6 text-white">
-          Add New Task
+          Edit Task
         </h2>
         <form className="space-y-8">
           {/* Task Name */}
@@ -41,6 +50,7 @@ const AddTask = () => {
               name="taskName"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter task name"
+              value={newData?.taskName}
               onChange={(e) =>
                 setNewData({ ...newData, taskName: e.target.value })
               }
@@ -60,6 +70,7 @@ const AddTask = () => {
               type="datetime-local"
               id="taskCreatedAt"
               name="taskCreatedAt"
+              value={dayjs(newData?.createdAt).format("YYYY-MM-DDTHH:mm")}
               onChange={(e) =>
                 setNewData({ ...newData, createdAt: e.target.value })
               }
@@ -80,6 +91,7 @@ const AddTask = () => {
               type="datetime-local"
               id="expectedFinishTime"
               name="expectedFinishTime"
+              value={dayjs(newData?.finishingTime).format("YYYY-MM-DDTHH:mm")}
               onChange={(e) =>
                 setNewData({ ...newData, finishingTime: e.target.value })
               }
@@ -99,6 +111,7 @@ const AddTask = () => {
             <select
               id="taskStatus"
               name="taskStatus"
+              value={newData?.checked ? "Completed" : "Incomplete"}
               onChange={(e) =>
                 setNewData({
                   ...newData,
@@ -119,13 +132,13 @@ const AddTask = () => {
           <div className="text-center">
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="w-full  bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               onClick={(e) => {
                 e.preventDefault();
-                handleAdd();
+                handleEdit(newData);
               }}
             >
-              Add Task
+              Update Task
             </button>
           </div>
         </form>
@@ -134,4 +147,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+export default EditTask;
