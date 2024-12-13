@@ -22,8 +22,8 @@ const AddTask = () => {
 
   return (
     <div>
-      <div className="max-w-md mx-auto mt-20 p-6 bg-gray-700  shadow-lg rounded-md">
-        <h2 className="text-2xl font-semibold text-center mb-6 text-white">
+      <div className="mx-auto mt-20 max-w-md rounded-md bg-gray-700 p-6 shadow-lg">
+        <h2 className="mb-6 text-center text-2xl font-semibold text-white">
           Add New Task
         </h2>
         <form className="space-y-8">
@@ -39,7 +39,7 @@ const AddTask = () => {
               type="text"
               id="taskName"
               name="taskName"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
               placeholder="Enter task name"
               onChange={(e) =>
                 setNewData({ ...newData, taskName: e.target.value })
@@ -63,7 +63,7 @@ const AddTask = () => {
               onChange={(e) =>
                 setNewData({ ...newData, createdAt: e.target.value })
               }
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
               required
             />
           </div>
@@ -83,7 +83,7 @@ const AddTask = () => {
               onChange={(e) =>
                 setNewData({ ...newData, finishingTime: e.target.value })
               }
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
               required
             />
           </div>
@@ -105,7 +105,7 @@ const AddTask = () => {
                   checked: e.target.value === "Completed",
                 })
               }
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
             >
               <option value="--" className="text-center">
                 --Select--
@@ -119,7 +119,7 @@ const AddTask = () => {
           <div className="text-center">
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="w-full rounded-md bg-blue-500 px-4 py-2 text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               onClick={(e) => {
                 e.preventDefault();
                 handleAdd();

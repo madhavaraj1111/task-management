@@ -51,25 +51,32 @@ const TaskTable = () => {
     setIsModalOpen(false);
   };
 
+  // const handleToggle = (currentValue) => {
+  //   setTaskData((prevData) => ({
+  //     ...prevData,
+  //     checked: !currentValue,
+  //   }));
+  // };
+
   return (
-    <div className="mx-10 mt-10 flex justify-center items-center">
+    <div className="mx-10 mt-10 flex items-center justify-center">
       {isModalOpen ? (
         <div
-          className={`max-w-md bg-white  rounded-lg shadow-inner  shadow-gray-500 px-20 py-8 absolute mx-auto z-10  text-xs border-2 border-gray-200 transition-all duration-300 `}
+          className={`absolute z-10 mx-auto max-w-md rounded-lg border-2 border-gray-200 bg-white px-20 py-8 text-xs shadow-inner shadow-gray-500 transition-all duration-300`}
         >
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <h2 className="mb-4 text-2xl font-bold text-gray-800">
             Task Details
           </h2>
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium text-gray-700">Task Name:</h3>
-              <p className="text-gray-600 text-sm">{viewData.taskName}</p>
+              <p className="text-sm text-gray-600">{viewData.taskName}</p>
             </div>
             <div>
               <h3 className="text-lg font-medium text-gray-700">
                 Task Created At:
               </h3>
-              <p className="text-gray-600 text-sm">
+              <p className="text-sm text-gray-600">
                 {dayjs(viewData.createdAt).format("DD-MM-YYYY,HH:MM")}
               </p>
             </div>
@@ -77,20 +84,23 @@ const TaskTable = () => {
               <h3 className="text-lg font-medium text-gray-700">
                 Expected Finishing Time:
               </h3>
-              <p className="text-gray-600 text-sm">
+              <p
+                className="text-sm text-gray-600"
+                style={{ backgroundColor: "red" }}
+              >
                 {dayjs(viewData.finishingTime).format("DD-MM-YYYY,HH:MM")}
               </p>
             </div>
             <div className="space-y-3">
-              <h3 className="text-lg font-medium text-gray-700 ">
+              <h3 className="text-lg font-medium text-gray-700">
                 Task Status:
               </h3>
               {viewData.checked ? (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-200 text-green-800">
+                <span className="inline-flex items-center rounded-full bg-green-200 px-3 py-1 text-sm font-medium text-green-800">
                   Completed
                 </span>
               ) : (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-200 text-red-800">
+                <span className="inline-flex items-center rounded-full bg-red-200 px-3 py-1 text-sm font-medium text-red-800">
                   Incomplete
                 </span>
               )}
@@ -99,7 +109,7 @@ const TaskTable = () => {
 
           <div className="mt-6 flex justify-end">
             <button
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:border hover:border-blue-500 hover:bg-white border-transparent border hover:text-blue-500 focus:outline-none focus:ring"
+              className="rounded border border-transparent bg-blue-500 px-4 py-2 text-white hover:border hover:border-blue-500 hover:bg-white hover:text-blue-500 focus:outline-none focus:ring"
               onClick={() => {
                 handleClose();
               }}
@@ -111,9 +121,9 @@ const TaskTable = () => {
       ) : (
         ""
       )}
-      <div className="relative overflow-x-auto p-5 bg-gray-500 shadow-md sm:rounded-lg ">
+      <div className="relative overflow-x-auto bg-gray-500 p-5 shadow-md sm:rounded-lg">
         <button
-          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-2 border-b-4 border-blue-700 flex items-center hover:border-blue-500 rounded mb-2"
+          className="mb-2 flex items-center rounded border-b-4 border-blue-700 bg-blue-500 px-2 py-1 font-bold text-white hover:border-blue-500 hover:bg-blue-400"
           onClick={() => {
             navigate("/add-task");
           }}
@@ -129,14 +139,14 @@ const TaskTable = () => {
           </svg>{" "}
           Add Task
         </button>
-        <div className="pb-4  dark:bg-gray-900 p-5 bg-slate-400 ">
+        <div className="bg-slate-400 p-5 pb-4 dark:bg-gray-900">
           <label htmlFor="table-search" className="sr-only">
             Search
           </label>
           <div className="relative mt-1">
-            <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none ">
+            <div className="rtl:inset-r-0 pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
               <svg
-                className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                className="h-4 w-4 text-gray-500 dark:text-gray-400"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -154,20 +164,20 @@ const TaskTable = () => {
             <input
               type="text"
               id="table-search"
-              className="block pt-2 pb-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-80 rounded-lg border border-gray-300 bg-gray-50 pb-2 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="Search for items"
             />
           </div>
         </div>
-        <table className="w-full text-sm text-left  rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
+        <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="p-4">
                 <div className="flex items-center">
                   <input
                     id="checkbox-all-search"
                     type="checkbox"
-                    className="w-4 h-4 text-green-200 bg-green-100 border-green-300 rounded focus:ring-green-300 dark:focus:ring-green-300 dark:ring-offset-green-800-800 dark:focus:ring-offset-green-800 focus:ring-2 dark:bg-green-700 dark:border-green-600"
+                    className="dark:ring-offset-green-800-800 h-4 w-4 rounded border-green-300 bg-green-100 text-green-200 focus:ring-2 focus:ring-green-300 dark:border-green-600 dark:bg-green-700 dark:focus:ring-green-300 dark:focus:ring-offset-green-800"
                   />
                   <label htmlFor="checkbox-all-search" className="sr-only">
                     checkbox
@@ -193,7 +203,7 @@ const TaskTable = () => {
             {taskData.map((data) => {
               return (
                 <tr
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 transition-all hover:bg-gray-50 dark:hover:bg-gray-900 "
+                  className="border-b bg-white transition-all hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-900"
                   key={data._id}
                 >
                   <td className="w-4 p-4">
@@ -205,7 +215,7 @@ const TaskTable = () => {
                         onClick={() => {
                           setCheckBox(!checkBox);
                         }}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                       />
                       <label
                         htmlFor="checkbox-table-search-1"
@@ -217,7 +227,7 @@ const TaskTable = () => {
                   </td>
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
                   >
                     {data.taskName}
                   </th>
@@ -228,19 +238,25 @@ const TaskTable = () => {
                     {dayjs(data.finishingTime).format("DD-MM-YYYY,HH:mm")}
                   </td>
                   <td className="px-6 py-4">
-                    {data.checked ? (
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-200 text-green-800">
-                        Completed
+                    <label className="me-5 inline-flex cursor-pointer items-center">
+                      <input
+                        type="checkbox"
+                        value={data.checked}
+                        className="peer sr-only"
+                        defaultChecked={data.checked}
+                        onChange={(e) => {
+                          handleToggle(data.checked);
+                        }}
+                      />
+                      <div className="peer relative h-6 w-11 rounded-full bg-red-500 after:absolute after:start-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-2 peer-focus:ring-gray-300 rtl:peer-checked:after:-translate-x-full"></div>
+                      <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                        {data.checked ? "Completed" : "Incomplete"}
                       </span>
-                    ) : (
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-200 text-red-800">
-                        Incomplete
-                      </span>
-                    )}
+                    </label>
                   </td>
-                  <td className="py-3 grid lg:grid-cols-3  text-center gap-3 m-3">
+                  <td className="m-3 grid gap-3 py-3 text-center lg:grid-cols-3">
                     <button
-                      className="hover:bg-blue-500 text-blue-400 hover:border border-blue-400 border hover:border-transparent  px-2 py-1 transition-all rounded hover:text-white bg-slate-800 font-semibold"
+                      className="rounded border border-blue-400 bg-slate-800 px-2 py-1 font-semibold text-blue-400 transition-all hover:border hover:border-transparent hover:bg-blue-500 hover:text-white"
                       onClick={() => {
                         handleView(data._id);
                       }}
@@ -248,7 +264,7 @@ const TaskTable = () => {
                       View
                     </button>
                     <button
-                      className="hover:bg-green-500 text-green-500 font-semibold bg-slate-800  px-2 py-1 transition-all hover:border border-green-500 hover:text-white rounded border hover:border-transparent"
+                      className="rounded border border-green-500 bg-slate-800 px-2 py-1 font-semibold text-green-500 transition-all hover:border hover:border-transparent hover:bg-green-500 hover:text-white"
                       onClick={() => {
                         handleEdit(data._id);
                       }}
@@ -256,7 +272,7 @@ const TaskTable = () => {
                       Edit
                     </button>
                     <button
-                      className="hover:bg-red-500 hover:border border-red-400 border hover:border-transparent font-semibold bg-slate-800 px-2 py-1 transition-all text-red-400 hover:text-white rounded"
+                      className="rounded border border-red-400 bg-slate-800 px-2 py-1 font-semibold text-red-400 transition-all hover:border hover:border-transparent hover:bg-red-500 hover:text-white"
                       onClick={() => {
                         handleDelete(data._id);
                       }}
