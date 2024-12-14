@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 const TaskTable = () => {
   const [taskData, setTaskData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [checkBox, setCheckBox] = useState(false);
   const [viewID, setViewID] = useState();
   const navigate = useNavigate();
 
@@ -21,10 +20,6 @@ const TaskTable = () => {
         console.log("Error while getting data from the server", error);
       });
   };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
 
   const handleView = (id) => {
     setViewID(id);
@@ -51,12 +46,21 @@ const TaskTable = () => {
     setIsModalOpen(false);
   };
 
-  // const handleToggle = (currentValue) => {
-  //   setTaskData((prevData) => ({
-  //     ...prevData,
-  //     checked: !currentValue,
-  //   }));
-  // };
+  const handleToggle = async (toggleId, checked) => {
+    try {
+      const currentValue = !checked;
+      await axios.put(`http://localhost:4545/tasks/${toggleId}`, {
+        checked: currentValue,
+      });
+      fetchTasks();
+    } catch (error) {
+      console.log("Error when update toggle data", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   return (
     <div className="mx-10 mt-10 flex items-center justify-center">
@@ -84,10 +88,7 @@ const TaskTable = () => {
               <h3 className="text-lg font-medium text-gray-700">
                 Expected Finishing Time:
               </h3>
-              <p
-                className="text-sm text-gray-600"
-                style={{ backgroundColor: "red" }}
-              >
+              <p className="text-sm text-gray-600">
                 {dayjs(viewData.finishingTime).format("DD-MM-YYYY,HH:MM")}
               </p>
             </div>
@@ -212,10 +213,10 @@ const TaskTable = () => {
                         id="checkbox-table-search-1"
                         type="checkbox"
                         defaultChecked={data.checked}
-                        onClick={() => {
-                          setCheckBox(!checkBox);
+                        onChange={() => {
+                          handleToggle(data._id, data.checked);
                         }}
-                        className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
+                        className={`h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800`}
                       />
                       <label
                         htmlFor="checkbox-table-search-1"
@@ -244,8 +245,8 @@ const TaskTable = () => {
                         value={data.checked}
                         className="peer sr-only"
                         defaultChecked={data.checked}
-                        onChange={(e) => {
-                          handleToggle(data.checked);
+                        onChange={() => {
+                          handleToggle(data._id, data.checked);
                         }}
                       />
                       <div className="peer relative h-6 w-11 rounded-full bg-red-500 after:absolute after:start-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-2 peer-focus:ring-gray-300 rtl:peer-checked:after:-translate-x-full"></div>
