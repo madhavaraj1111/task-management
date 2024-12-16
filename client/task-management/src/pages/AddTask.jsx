@@ -44,6 +44,7 @@ const AddTask = () => {
               onChange={(e) =>
                 setNewData({ ...newData, taskName: e.target.value })
               }
+              autoComplete="off"
               required
             />
           </div>
