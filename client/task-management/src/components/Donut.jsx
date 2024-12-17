@@ -9,11 +9,6 @@ const DonutChart = () => {
   const [chartData, setChartData] = useState({ completed: 0, incomplete: 0 });
 
   useEffect(() => {
-    console.log("Data load");
-    console.log("Data load");
-    console.log("Data load");
-    console.log("Data load");
-
     axios
       .get(`http://localhost:4545/tasks/`)
       .then((response) => {
@@ -28,8 +23,8 @@ const DonutChart = () => {
           incomplete: incompleteData.length,
         });
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log("Failed to fetch tasks", error);
       });
   }, []);
 
@@ -51,11 +46,11 @@ const DonutChart = () => {
     plugins: {
       legend: {
         display: true,
-        position: "top",
+        position: "bottom",
         labels: {
-          color: "#4b5563",
+          color: "gray",
           font: {
-            size: 14,
+            size: 16,
           },
         },
       },
@@ -70,7 +65,7 @@ const DonutChart = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="h-screen">
+      <div className="border-gray-1200 z-50 rounded-2xl border bg-white p-10 shadow-xl">
         <Doughnut data={data} options={options} />
       </div>
     </div>
